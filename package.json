@@ -1,6 +1,6 @@
 {
-    "name": "twaz",
-    "version": "0.26.7",
+    "name": "@maxzz/twaz",
+    "version": "0.26.9",
     "description": "Check and automatically fix Tailwind CSS utility class order in JSX/TSX files",
     "author": "Max Zakharzhevskyi",
     "license": "MIT",
