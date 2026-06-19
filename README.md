@@ -139,45 +139,88 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 
 ### Visual order
 
-Classes in a `className` string flow left → right following the group sequence:
+Groups are listed top → bottom (1 first, 19 last). In a `className` string, earlier groups sort to the left.
 
 ```mermaid
-flowchart LR
-    subgraph layout["Layout & box"]
-        G1["1 Position anchor"]
-        G2["2 Offsets"]
-        G3["3 Self & group"]
-        G4["4 Element"]
-        G5["5 Margin & padding"]
-        G6["6 Width & height"]
-        G7["7 Display"]
+flowchart TB
+    subgraph R01[ ]
+        direction LR
+        H1["1 Position anchor"] --> M1["relative<br/>absolute<br/>fixed<br/>sticky<br/>static"]
+    end
+    subgraph R02[ ]
+        direction LR
+        H2["2 Offsets"] --> M2["inset-*<br/>top-*<br/>right-*<br/>bottom-*<br/>left-*"]
+    end
+    subgraph R03[ ]
+        direction LR
+        H3["3 Self & group"] --> M3["self-*<br/>group<br/>group/name"]
+    end
+    subgraph R04[ ]
+        direction LR
+        H4["4 Element"] --> M4["shrink-*<br/>grow-*<br/>basis-*<br/>select-*<br/>whitespace-*<br/>compress-zero"]
+    end
+    subgraph R05[ ]
+        direction LR
+        H5["5 Spacing"] --> M5["m-* mx-* my-*<br/>mt-* mr-* mb-* ml-*<br/>p-* px-* py-*<br/>pt-* pr-* pb-* pl-*"]
+    end
+    subgraph R06[ ]
+        direction LR
+        H6["6 Size"] --> M6["w-* h-*<br/>min-w-* max-w-*<br/>min-h-* max-h-*<br/>size-* aspect-*"]
+    end
+    subgraph R07[ ]
+        direction LR
+        H7["7 Display"] --> M7["block<br/>inline<br/>hidden<br/>visible<br/>isolate"]
+    end
+    subgraph R08[ ]
+        direction LR
+        H8["8 Text size"] --> M8["text-xs<br/>text-sm<br/>text-base<br/>text-lg<br/>… text-9xl"]
+    end
+    subgraph R09[ ]
+        direction LR
+        H9["9 Font"] --> M9["font-medium<br/>font-mono<br/>font-*"]
+    end
+    subgraph R10[ ]
+        direction LR
+        H10["10 Text color"] --> M10["text-red-500<br/>text-muted-*<br/>text-center<br/>text-left"]
+    end
+    subgraph R11[ ]
+        direction LR
+        H11["11 Background"] --> M11["bg-* fill-*<br/>stroke-* from-*<br/>to-* via-*<br/>opacity-* accent-*"]
+    end
+    subgraph R12[ ]
+        direction LR
+        H12["12 Variants"] --> M12["hover:* focus:*<br/>disabled:* md:*<br/>dark:* aria-*:*<br/>data-*:* group-hover:*"]
+    end
+    subgraph R13[ ]
+        direction LR
+        H13["13 Transition"] --> M13["transition-*<br/>duration-*<br/>animate-*"]
+    end
+    subgraph R14[ ]
+        direction LR
+        H14["14 Border"] --> M14["border<br/>border-* outline-*<br/>ring-* divide-*"]
+    end
+    subgraph R15[ ]
+        direction LR
+        H15["15 Rounding"] --> M15["rounded-sm<br/>rounded-md<br/>rounded-full<br/>rounded-*"]
+    end
+    subgraph R16[ ]
+        direction LR
+        H16["16 Shadow"] --> M16["shadow-sm<br/>shadow-md<br/>shadow-lg<br/>shadow-*"]
+    end
+    subgraph R17[ ]
+        direction LR
+        H17["17 Overflow"] --> M17["truncate<br/>overflow-*<br/>text-ellipsis"]
+    end
+    subgraph R18[ ]
+        direction LR
+        H18["18 Flex/grid"] --> M18["grid flex<br/>gap-* items-*<br/>justify-* content-*<br/>order-* col-* row-*"]
+    end
+    subgraph R19[ ]
+        direction LR
+        H19["19 End"] --> M19["cursor-*<br/>pointer-events-*<br/>z-*"]
     end
 
-    subgraph typography["Typography & color"]
-        G8["8 Text size"]
-        G9["9 Font"]
-        G10["10 Text color"]
-        G11["11 Background & fill"]
-        G12["12 Variant modifiers"]
-    end
-
-    subgraph surface["Surface & motion"]
-        G13["13 Transition"]
-        G14["14 Border"]
-        G15["15 Rounding"]
-        G16["16 Shadow"]
-        G17["17 Truncate & overflow"]
-    end
-
-    subgraph children["Children & interaction"]
-        G18["18 Grid & flex"]
-        G19["19 End cursor / z-index"]
-    end
-
-    G1 --> G2 --> G3 --> G4 --> G5 --> G6 --> G7
-    G7 --> G8 --> G9 --> G10 --> G11 --> G12
-    G12 --> G13 --> G14 --> G15 --> G16 --> G17
-    G17 --> G18 --> G19
+    R01 --> R02 --> R03 --> R04 --> R05 --> R06 --> R07 --> R08 --> R09 --> R10 --> R11 --> R12 --> R13 --> R14 --> R15 --> R16 --> R17 --> R18 --> R19
 ```
 
 ASCII summary of the same pipeline:
