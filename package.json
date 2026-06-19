@@ -1,0 +1,48 @@
+{
+    "name": "twaz-go",
+    "version": "0.26.4",
+    "description": "Check and automatically fix Tailwind CSS utility class order in JSX/TSX files",
+    "author": "Max Zakharzhevskyi",
+    "license": "MIT",
+    "keywords": [
+        "tailwind",
+        "tailwindcss",
+        "class-order",
+        "lint",
+        "cli",
+        "jsx",
+        "tsx"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "bin": {
+        "twaz": "./bin/twaz.js"
+    },
+    "files": [
+        "bin",
+        "binaries",
+        "README.md",
+        "LICENSE"
+    ],
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/maxzz/tw-az.git"
+    },
+    "bugs": {
+        "url": "https://github.com/maxzz/tw-az/issues"
+    },
+    "homepage": "https://github.com/maxzz/tw-az#readme",
+    "scripts": {
+        "dev": "go run ./cmd/twaz",
+        "fix": "go run ./cmd/twaz --fix",
+        "test": "go test ./...",
+        "sync-version": "node scripts/sync-version.mjs",
+        "build:go": "node scripts/build-binaries.mjs",
+        "build": "node scripts/sync-version.mjs --bump && node scripts/build-binaries.mjs",
+        "version": "node scripts/sync-version.mjs",
+        "prepublishOnly": "npm run build:go",
+        "to-npm": "npm publish"
+    }
+}
