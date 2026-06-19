@@ -51,7 +51,7 @@ func printUsage() {
 			},
 			{
 				Flag:        "--help, -h",
-				Description: "Show this help message (default: off)",
+				Description: "Show this help message",
 			},
 		},
 		Args: []console.UsageArg{
