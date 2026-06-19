@@ -1,8 +1,6 @@
 package twaz
 
 import (
-	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"sort"
@@ -10,7 +8,7 @@ import (
 )
 
 // RunScan scans paths for Tailwind class order violations.
-func RunScan(paths []string, options ScanOptions, out io.Writer) ScanResult {
+func RunScan(paths []string, options ScanOptions) ScanResult {
 	extensions := options.Extensions
 	if len(extensions) == 0 {
 		extensions = defaultExtensions
@@ -34,16 +32,7 @@ func RunScan(paths []string, options ScanOptions, out io.Writer) ScanResult {
 			fixedCount += applyFixes(file, string(content), ExtractClassStrings(string(content)))
 		}
 
-		if out != nil {
-			fmt.Fprintf(out, "Scanned %d files\n", len(files))
-			fmt.Fprintf(out, "Fixed %d class string%s\n\n", fixedCount, plural(fixedCount))
-		}
-
 		if fixedCount > 0 {
-			if out != nil {
-				fmt.Fprintln(out, "Re-checking after fix...")
-			fmt.Fprintln(out)
-			}
 			remaining := scanForViolations(files, rootDir)
 			return ScanResult{FileCount: len(files), Violations: remaining, FixedCount: fixedCount}
 		}
@@ -185,11 +174,4 @@ func hasExtension(path string, extensions []string) bool {
 		}
 	}
 	return false
-}
-
-func plural(count int) string {
-	if count == 1 {
-		return ""
-	}
-	return "s"
 }
