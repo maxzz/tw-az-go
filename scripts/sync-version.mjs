@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const pkgPath = join(root, "package.json");
-const out = join(root, "twaz", "version.go");
+const out = join(root, "twaz", "8-version.go");
 const bump = process.argv.includes("--bump");
 
 const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
