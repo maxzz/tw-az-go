@@ -54,20 +54,23 @@ npm run fix
 # Go tests
 npm test
 
-# Cross-compile binaries for npm publish
+# Build Windows binary (default)
 npm run build:go
 
-# Bump patch version, sync version.go, and rebuild binaries
+# Build all platform binaries (for npm publish)
+npm run build:all
+
+# Bump patch version, sync version.go, and rebuild Windows binary
 npm run build
 ```
 
 ## Publishing to npm
 
 1. Log in: `npm login`
-2. Build platform binaries: `npm run build:go`
+2. Build all platform binaries: `npm run build:all`
 3. Publish: `npm publish` (or `npm run to-npm`)
 
-The `prepublishOnly` script rebuilds binaries automatically before publish.
+`prepublishOnly` runs `build:all` automatically before publish.
 
 ## What gets scanned
 

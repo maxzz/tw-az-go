@@ -8,8 +8,9 @@ import { fileURLToPath } from "node:url";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const binariesDir = join(root, "binaries");
 const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+const buildAll = process.argv.includes("--all");
 
-const targets = [
+const allTargets = [
     { os: "darwin", arch: "arm64" },
     { os: "darwin", arch: "amd64" },
     { os: "linux", arch: "amd64" },
@@ -17,7 +18,12 @@ const targets = [
     { os: "windows", arch: "amd64" },
 ];
 
-rmSync(binariesDir, { recursive: true, force: true });
+const windowsTargets = [{ os: "windows", arch: "amd64" }];
+const targets = buildAll ? allTargets : windowsTargets;
+
+if (buildAll) {
+    rmSync(binariesDir, { recursive: true, force: true });
+}
 mkdirSync(binariesDir, { recursive: true });
 
 for (const { os, arch } of targets) {
@@ -60,9 +66,14 @@ for (const { os, arch } of targets) {
     }
 }
 
-if (!existsSync(join(binariesDir, "darwin-arm64", "twaz"))) {
+const checkTarget = buildAll
+    ? join(binariesDir, "darwin-arm64", "twaz")
+    : join(binariesDir, "windows-amd64", "twaz.exe");
+
+if (!existsSync(checkTarget)) {
     console.error("build-binaries: no binaries produced");
     process.exit(1);
 }
 
-console.log(`Built ${targets.length} platform binaries into binaries/`);
+const scope = buildAll ? "all platforms" : "windows-amd64";
+console.log(`Built ${targets.length} platform binary/binaries (${scope}) into binaries/`);

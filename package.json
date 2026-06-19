@@ -1,5 +1,5 @@
 {
-    "name": "twaz-go",
+    "name": "twaz",
     "version": "0.26.4",
     "description": "Check and automatically fix Tailwind CSS utility class order in JSX/TSX files",
     "author": "Max Zakharzhevskyi",
@@ -40,9 +40,10 @@
         "test": "go test ./...",
         "sync-version": "node scripts/sync-version.mjs",
         "build:go": "node scripts/build-binaries.mjs",
+        "build:all": "node scripts/build-binaries.mjs --all",
         "build": "node scripts/sync-version.mjs --bump && node scripts/build-binaries.mjs",
         "version": "node scripts/sync-version.mjs",
-        "prepublishOnly": "npm run build:go",
+        "prepublishOnly": "npm run build:all",
         "to-npm": "npm publish"
     }
 }
