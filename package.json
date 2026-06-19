@@ -22,8 +22,7 @@
     "files": [
         "bin",
         "binaries",
-        "README.md",
-        "LICENSE"
+        "README.md"
     ],
     "type": "module",
     "repository": {
