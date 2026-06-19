@@ -11,7 +11,12 @@ import (
 )
 
 // PrintScanReport writes a colored scan/fix summary and violation details.
-func PrintScanReport(result twaz.ScanResult, operation string, showFixHint bool) {
+func PrintScanReport(result twaz.ScanResult, operation, targetFolder string, showFixHint bool) {
+	if operation == OperationFix && targetFolder != "" {
+		fmt.Fprintln(os.Stdout, targetFolder)
+		fmt.Fprintln(os.Stdout)
+	}
+
 	fmt.Fprintf(os.Stdout, "%s%s%s\n", ColorCyan, operation, ColorReset)
 	fmt.Fprintln(os.Stdout)
 
@@ -35,7 +40,7 @@ func PrintScanReport(result twaz.ScanResult, operation string, showFixHint bool)
 	printViolations(result.Violations, result.FileCount, operation != OperationFix)
 
 	if showFixHint && len(result.Violations) > 0 {
-		fmt.Fprintf(os.Stdout, "%sRun with --fix to reorder classes automatically.%s\n", ColorYellow, ColorReset)
+		fmt.Fprintf(os.Stdout, "%sRun without --check to reorder classes automatically.%s\n", ColorYellow, ColorReset)
 	}
 }
 

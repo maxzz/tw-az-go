@@ -31,7 +31,11 @@ func main() {
 	}
 
 	result := twaz.RunScan(paths, twaz.ScanOptions{Fix: args.Fix})
-	console.PrintScanReport(result, operation, !args.Fix)
+	targetFolder := ""
+	if args.Fix {
+		targetFolder = twaz.TargetFolderLabel(paths)
+	}
+	console.PrintScanReport(result, operation, targetFolder, !args.Fix)
 
 	exitCode := 0
 	if len(result.Violations) > 0 {
@@ -46,8 +50,12 @@ func printUsage() {
 		Syntax:  "twaz [options] [paths...]",
 		Options: []console.UsageOption{
 			{
+				Flag:        "--check, -c",
+				Description: "Report violations only; do not reorder classes (default: off; fix is enabled)",
+			},
+			{
 				Flag:        "--fix, -f",
-				Description: "Reorder classes automatically in place (default: off; report only)",
+				Description: "Reorder classes automatically in place (default: on)",
 			},
 			{
 				Flag:        "--help, -h",
@@ -62,7 +70,7 @@ func printUsage() {
 		},
 		Examples: []string{
 			"twaz src",
-			"twaz --fix src/components",
+			"twaz --check src",
 			"twaz src/App.tsx",
 		},
 	})

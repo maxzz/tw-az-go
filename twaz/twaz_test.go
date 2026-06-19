@@ -2,7 +2,27 @@ package twaz
 
 import "testing"
 
-func TestSortClassString(t *testing.T) {
+func TestParseArgsFixDefault(t *testing.T) {
+	args := ParseArgs([]string{"src"})
+	if !args.Fix {
+		t.Fatal("expected fix enabled by default")
+	}
+}
+
+func TestParseArgsCheckDisablesFix(t *testing.T) {
+	args := ParseArgs([]string{"--check", "src"})
+	if args.Fix {
+		t.Fatal("expected fix disabled with --check")
+	}
+}
+
+func TestTargetFolderLabel(t *testing.T) {
+	if got := TargetFolderLabel([]string{"testdata"}); got != "testdata" {
+		t.Fatalf("dir label = %q, want testdata", got)
+	}
+}
+
+	func TestSortClassString(t *testing.T) {
 	input := "bg-muted text-sm absolute top-0"
 	want := "absolute top-0 text-sm bg-muted"
 	if got := SortClassString(input); got != want {

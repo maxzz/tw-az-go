@@ -10,7 +10,12 @@ import (
 )
 
 // PrintScanReport writes a plain scan/fix summary and violation details.
-func PrintScanReport(result twaz.ScanResult, operation string, showFixHint bool) {
+func PrintScanReport(result twaz.ScanResult, operation, targetFolder string, showFixHint bool) {
+	if operation == OperationFix && targetFolder != "" {
+		fmt.Println(targetFolder)
+		fmt.Println()
+	}
+
 	fmt.Println(operation)
 	fmt.Println()
 
@@ -27,7 +32,7 @@ func PrintScanReport(result twaz.ScanResult, operation string, showFixHint bool)
 	printViolations(result.Violations, result.FileCount, operation != OperationFix)
 
 	if showFixHint && len(result.Violations) > 0 {
-		fmt.Println("Run with --fix to reorder classes automatically.")
+		fmt.Println("Run without --check to reorder classes automatically.")
 	}
 }
 
