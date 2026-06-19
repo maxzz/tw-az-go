@@ -4,6 +4,14 @@
     "description": "Check and automatically fix Tailwind CSS utility class order in JSX/TSX files",
     "author": "Max Zakharzhevskyi",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/maxzz/tw-az-go.git"
+    },
+    "bugs": {
+        "url": "https://github.com/maxzz/tw-az-go/issues"
+    },
+    "homepage": "https://github.com/maxzz/tw-az-go#readme",
     "keywords": [
         "tailwind",
         "tailwindcss",
@@ -25,14 +33,6 @@
         "README.md"
     ],
     "type": "module",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/maxzz/tw-az.git"
-    },
-    "bugs": {
-        "url": "https://github.com/maxzz/tw-az/issues"
-    },
-    "homepage": "https://github.com/maxzz/tw-az#readme",
     "scripts": {
         "dev": "go run ./cmd/twaz C:/Users/maxzz/Desktop/page-qa2-test",
         "fix": "go run ./cmd/twaz --fix",
