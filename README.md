@@ -100,10 +100,32 @@ By default, `twaz` scans `.tsx` and `.jsx` files. It looks for class strings in:
 
 - `className="..."` / `className='...'`
 - `className={`...`}` / `className={"..."}`
+- `` className={`... ${expr} ...`} `` — template literals with interpolation (static segments are checked/fixed independently; string literals inside `${...}` ternaries are also extracted)
 - `class="..."`
-- `cn("...")` / `classNames("...")`
+- `cn("...", "...")` / `classNames("...", "...")` — all string literal arguments are checked
 
 Directories `node_modules`, `dist`, and `.git` are skipped.
+
+### Template literal interpolation
+
+When a `className` uses a template literal with `${...}` expressions, `twaz` handles each part separately:
+
+```tsx
+className={`h-8 pr-8 ${isInvalid ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+```
+
+- **Static segments** (`h-8 pr-8`) are extracted and checked/sorted as independent class strings.
+- **String literals inside interpolation** (`'border-red-500 focus-visible:ring-red-500'`) are also extracted and checked/sorted.
+- Non-string expressions and variables inside `${...}` are ignored.
+
+### Multi-argument `cn()` / `classNames()`
+
+All string literal arguments are extracted, not just the first:
+
+```tsx
+cn("px-4 h-9", "text-sm font-medium")        // both strings are checked
+classNames("mx-5 mt-1 text-xs", className)    // string arg checked, variable ignored
+```
 
 ## Tailwind class order rules
 

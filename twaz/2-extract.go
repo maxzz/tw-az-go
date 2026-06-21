@@ -66,11 +66,11 @@ func parseTemplateLiteral(content string, capturedStart, capturedEnd int) []Clas
 	for i < len(tmpl) {
 		dollarIdx := strings.Index(tmpl[i:], "${")
 		if dollarIdx < 0 {
-			addStaticSegment(content, tmpl[i:], capturedStart+i, &results)
+			addStaticSegment(tmpl[i:], capturedStart+i, &results)
 			break
 		}
 
-		addStaticSegment(content, tmpl[i:i+dollarIdx], capturedStart+i, &results)
+		addStaticSegment(tmpl[i:i+dollarIdx], capturedStart+i, &results)
 
 		exprStart := i + dollarIdx + 2
 		exprEnd := findClosingBrace(tmpl, exprStart)
@@ -80,7 +80,7 @@ func parseTemplateLiteral(content string, capturedStart, capturedEnd int) []Clas
 
 		expr := tmpl[exprStart:exprEnd]
 		absExprStart := capturedStart + exprStart
-		extractStringLiteralsFromExpr(content, absExprStart, expr, &results)
+		extractStringLiteralsFromExpr(absExprStart, expr, &results)
 
 		i = exprEnd + 1
 	}
@@ -90,7 +90,7 @@ func parseTemplateLiteral(content string, capturedStart, capturedEnd int) []Clas
 
 // addStaticSegment adds a ClassMatch for a static template literal segment
 // if it contains at least one class-like token.
-func addStaticSegment(content string, segment string, absStart int, results *[]ClassMatch) {
+func addStaticSegment(segment string, absStart int, results *[]ClassMatch) {
 	trimmed := strings.TrimSpace(segment)
 	if trimmed == "" || !containsClassToken(trimmed) {
 		return
@@ -151,9 +151,10 @@ func skipQuotedString(s string, start int) int {
 func skipTemplateLiteral(s string, start int) int {
 	i := start + 1
 	for i < len(s) && s[i] != '`' {
-		if s[i] == '\\' {
+		switch {
+		case s[i] == '\\':
 			i++
-		} else if i+1 < len(s) && s[i] == '$' && s[i+1] == '{' {
+		case i+1 < len(s) && s[i] == '$' && s[i+1] == '{':
 			i += 2
 			depth := 1
 			for i < len(s) && depth > 0 {
@@ -176,7 +177,7 @@ func skipTemplateLiteral(s string, start int) int {
 
 // extractStringLiteralsFromExpr finds quoted string literals within an interpolation
 // expression and adds ClassMatch entries for those that contain class-like tokens.
-func extractStringLiteralsFromExpr(content string, absExprStart int, expr string, results *[]ClassMatch) {
+func extractStringLiteralsFromExpr(absExprStart int, expr string, results *[]ClassMatch) {
 	i := 0
 	for i < len(expr) {
 		ch := expr[i]
@@ -226,7 +227,7 @@ func extractMultiArgCalls(content string, seen map[string]struct{}, results *[]C
 		}
 
 		argsContent := content[argsStart:argsEnd]
-		extractFuncStringArgs(content, argsStart, argsContent, seen, results)
+		extractFuncStringArgs(argsStart, argsContent, seen, results)
 	}
 }
 
@@ -259,7 +260,7 @@ func findMatchingParen(content string, start int) int {
 
 // extractFuncStringArgs extracts string literal arguments from a function call's
 // argument list, skipping the first argument (already handled by regex patterns).
-func extractFuncStringArgs(content string, argsAbsStart int, argsContent string, seen map[string]struct{}, results *[]ClassMatch) {
+func extractFuncStringArgs(argsAbsStart int, argsContent string, seen map[string]struct{}, results *[]ClassMatch) {
 	argIndex := 0
 	i := 0
 	for i < len(argsContent) {
