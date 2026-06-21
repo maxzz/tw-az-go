@@ -1,6 +1,6 @@
 {
     "name": "twaz-go",
-    "version": "0.26.12",
+    "version": "0.26.13",
     "description": "Check and automatically fix Tailwind CSS utility class order in JSX/TSX files",
     "author": "Max Zakharzhevskyi",
     "license": "MIT",
