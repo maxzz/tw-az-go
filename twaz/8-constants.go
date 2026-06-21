@@ -64,6 +64,8 @@ var classPatterns = []*regexp.Regexp{
 	regexp.MustCompile(`classNames\(\s*["'` + "`" + `]([^"'` + "`" + `]+)["'` + "`" + `]`),
 }
 
+var reFuncCall = regexp.MustCompile(`(?:cn|classNames)\(`)
+
 var ignoredDirectories = map[string]struct{}{
 	"node_modules": {},
 	"dist":         {},
