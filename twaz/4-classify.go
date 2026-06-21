@@ -59,18 +59,18 @@ func Classify(token string) int {
 		if variant {
 			return variantGroup
 		}
-		return 0
+		return 1
 	}
 
 	if rePositionOff.MatchString(base) {
 		if variant {
 			return variantGroup
 		}
-		return 1
+		return 2
 	}
 
 	if reSelfGroup.MatchString(base) || base == "group" || reGroupSlash.MatchString(base) {
-		return 2
+		return 3
 	}
 
 	if reTransition.MatchString(base) {
@@ -82,7 +82,7 @@ func Classify(token string) int {
 	}
 
 	if reGrid.MatchString(base) || base == "grid" || reInlineGrid.MatchString(base) ||
-		reFlex.MatchString(base) || base == "flex" || reInlineFlex.MatchString(base) ||
+		base == "flex" || reInlineFlex.MatchString(base) ||
 		reGap.MatchString(base) || reItems.MatchString(base) || reJustify.MatchString(base) ||
 		reContent.MatchString(base) || rePlace.MatchString(base) || reOrder.MatchString(base) ||
 		reCol.MatchString(base) || reRow.MatchString(base) || reSpace.MatchString(base) ||
@@ -95,8 +95,8 @@ func Classify(token string) int {
 
 	if reShrinkGrow.MatchString(base) || reShrink.MatchString(base) || reGrow.MatchString(base) ||
 		reBasis.MatchString(base) || reWhitespace.MatchString(base) ||
-		base == "compress-zero" {
-		return 3
+		base == "compress-zero" || strings.HasPrefix(base, "flex-") {
+		return 0
 	}
 
 	if !variant && reSpacing.MatchString(base) {

@@ -139,10 +139,10 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 
 | # | Group | Examples |
 |---|-------|----------|
-| 1 | Position anchor | `relative`, `absolute`, `fixed`, `sticky`, `static` |
-| 2 | Position offsets | `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*` |
-| 3 | Self & group | `self-*`, `group`, `group/name` |
-| 4 | Element | `shrink-*`, `grow-*`, `whitespace-*`, `compress-zero` |
+| 1 | Element | `flex-*`, `shrink-*`, `grow-*`, `whitespace-*`, `compress-zero` |
+| 2 | Position anchor | `relative`, `absolute`, `fixed`, `sticky`, `static` |
+| 3 | Position offsets | `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*` |
+| 4 | Self & group | `self-*`, `group`, `group/name` |
 | 5 | Margin & padding | `m-*`, `p-*`, and axis variants |
 | 6 | Width & height | `w-*`, `h-*`, `min-*`, `max-*`, `size-*`, `aspect-*` |
 | 7 | Display | `block`, `inline`, `hidden`, `visible`, `isolate` |
@@ -156,7 +156,7 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 | 15 | Rounding | `rounded-*` |
 | 16 | Shadow | `shadow-*` |
 | 17 | Truncate & overflow | `truncate`, `overflow-*`, `text-ellipsis`, `select-*` |
-| 18 | Children (grid & flex) | `flex-*`, `grid-*`, `flex`, `items-*`, `justify-*`, `gap-*`, etc. |
+| 18 | Children (grid & flex) | `grid-*`, `flex`, `items-*`, `justify-*`, `gap-*`, etc. |
 | 19 | End | `cursor-*`, `pointer-events-*`, `z-*` (always last) |
 
 ### Visual order
@@ -168,27 +168,29 @@ Groups are listed top → bottom (1 first, 19 last). In a `className` string, ea
 
 ### Group details
 
-#### 1. Position anchor
+#### 1. Element
 
-Positioning mode comes first — before any offset values.
+Flex-child sizing and element-level behavior come first — these describe how the element itself behaves inside a flex container.
+
+`flex-*` · `shrink-*` · `grow-*` · `basis-*` · `whitespace-*` · `compress-zero`
+
+#### 2. Position anchor
+
+Positioning mode — before any offset values.
 
 `relative` · `absolute` · `fixed` · `sticky` · `static`
 
 Variant-prefixed anchors (e.g. `md:absolute`) are treated as **variant modifiers** (group 12).
 
-#### 2. Position offsets
+#### 3. Position offsets
 
 `inset-*` · `top-*` · `right-*` · `bottom-*` · `left-*`
 
-#### 3. Self & group
+#### 4. Self & group
 
 `self-*` · `group` · `group/accordion-trigger`
 
 Named groups like `group/accordion-trigger` are recognized as group utilities, not variant prefixes.
-
-#### 4. Element
-
-`shrink-*` · `grow-*` · `basis-*` · `whitespace-*` · `compress-zero`
 
 #### 5. Margin & padding
 
@@ -268,9 +270,9 @@ Before children layout utilities.
 
 #### 18. Children (grid & flex)
 
-Layout that affects children. `flex-*` child sizing utilities come first because they apply to items inside a flex container.
+Layout that affects children. `flex-*` child sizing utilities are in group 1 (element); bare `flex` and other container utilities stay here.
 
-`flex-*` · `grid` · `grid-*` · `inline-grid` · `flex` · `inline-flex` · `items-*` · `justify-*` · `content-*` · `place-*` · `order-*` · `col-*` · `row-*` · `space-x-*` · `space-y-*` · `list-*` · `gap-*`
+`grid` · `grid-*` · `inline-grid` · `flex` · `inline-flex` · `items-*` · `justify-*` · `content-*` · `place-*` · `order-*` · `col-*` · `row-*` · `space-x-*` · `space-y-*` · `list-*` · `gap-*`
 
 Variant-prefixed children utilities (e.g. `md:flex`) sort as **variant modifiers**.
 
