@@ -53,8 +53,8 @@ func TestClassifyTextSizeVsColor(t *testing.T) {
 }
 
 func TestClassifyGroupNamed(t *testing.T) {
-	if Classify("group/accordion-trigger") != 3 {
-		t.Fatalf("group/accordion-trigger group = %d, want 3", Classify("group/accordion-trigger"))
+	if Classify("group/accordion-trigger") != 0 {
+		t.Fatalf("group/accordion-trigger group = %d, want 0", Classify("group/accordion-trigger"))
 	}
 }
 

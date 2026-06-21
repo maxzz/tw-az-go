@@ -17,10 +17,10 @@ const (
 var defaultExtensions = []string{".tsx", ".jsx"}
 
 var groupNames = []string{
+	"group",
 	"element",
 	"position anchor",
 	"position offsets",
-	"self & group",
 	"margin & padding",
 	"width & height",
 	"display",

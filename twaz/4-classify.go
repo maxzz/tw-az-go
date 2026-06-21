@@ -7,43 +7,48 @@ import (
 )
 
 var (
-	reEnd           = regexp.MustCompile(`^(?:cursor-|pointer-events)`)
-	reZIndex        = regexp.MustCompile(`^z-`)
-	rePosition      = regexp.MustCompile(`^(?:relative|absolute|fixed|sticky|static)`)
-	rePositionOff   = regexp.MustCompile(`^(?:inset-|top-|right-|bottom-|left-)`)
-	reSelfGroup     = regexp.MustCompile(`^self-`)
-	reGroupSlash    = regexp.MustCompile(`^group/`)
-	reTransition    = regexp.MustCompile(`^(?:transition|duration|animate)`)
-	reOverflow      = regexp.MustCompile(`^overflow-`)
-	reGrid          = regexp.MustCompile(`^grid(?:-|$)`)
-	reInlineGrid    = regexp.MustCompile(`^inline-grid`)
-	reFlex          = regexp.MustCompile(`^flex(?:-|$)`)
-	reInlineFlex    = regexp.MustCompile(`^inline-flex`)
-	reGap           = regexp.MustCompile(`^gap-`)
-	reItems         = regexp.MustCompile(`^items-`)
-	reJustify       = regexp.MustCompile(`^justify-`)
-	reContent       = regexp.MustCompile(`^content-`)
-	rePlace         = regexp.MustCompile(`^place-`)
-	reOrder         = regexp.MustCompile(`^order-`)
-	reCol           = regexp.MustCompile(`^col-`)
-	reRow           = regexp.MustCompile(`^row-`)
-	reSpace         = regexp.MustCompile(`^space-[xy]-`)
-	reList          = regexp.MustCompile(`^list-`)
-	reShrinkGrow    = regexp.MustCompile(`^(?:shrink|grow)$`)
-	reShrink        = regexp.MustCompile(`^shrink-`)
-	reGrow          = regexp.MustCompile(`^grow-`)
-	reBasis         = regexp.MustCompile(`^basis-`)
-	reSelect        = regexp.MustCompile(`^select-`)
-	reWhitespace    = regexp.MustCompile(`^whitespace-`)
-	reSpacing       = regexp.MustCompile(`^(?:m-|mx-|my-|mt-|mr-|mb-|ml-|p-|px-|py-|pt-|pr-|pb-|pl-)`)
-	reDimensions    = regexp.MustCompile(`^(?:w-|h-|min-w-|max-w-|min-h-|max-h-|size-|aspect-)`)
-	reFont          = regexp.MustCompile(`^font-`)
-	reBorder        = regexp.MustCompile(`^(?:border|outline-|ring-|divide-)`)
-	reRounded       = regexp.MustCompile(`^rounded`)
-	reShadow        = regexp.MustCompile(`^shadow`)
-	reTextColor     = regexp.MustCompile(`^text-`)
-	reBgFill        = regexp.MustCompile(`^(?:bg-|fill-|stroke-|from-|to-|via-|opacity-|accent-|caret-|decoration-)`)
-	reGroupNamed    = regexp.MustCompile(`^group/[\w-]+$`)
+	reEnd            = regexp.MustCompile(`^(?:cursor-|pointer-events)`)
+	reZIndex         = regexp.MustCompile(`^z-`)
+	rePosition       = regexp.MustCompile(`^(?:relative|absolute|fixed|sticky|static)`)
+	rePositionOff    = regexp.MustCompile(`^(?:inset-|top-|right-|bottom-|left-)`)
+	reSelfGroup      = regexp.MustCompile(`^self-`)
+	reJustifySelf    = regexp.MustCompile(`^justify-self-`)
+	rePlaceSelf      = regexp.MustCompile(`^place-self-`)
+	reAspect         = regexp.MustCompile(`^aspect-`)
+	reGroupSlash     = regexp.MustCompile(`^group/`)
+	reTransition     = regexp.MustCompile(`^(?:transition|duration|animate)`)
+	reOverflow       = regexp.MustCompile(`^overflow-`)
+	reGrid           = regexp.MustCompile(`^grid(?:-|$)`)
+	reInlineGrid     = regexp.MustCompile(`^inline-grid`)
+	reFlexContainer  = regexp.MustCompile(`^flex-(row|col|wrap|nowrap)`)
+	reInlineFlex     = regexp.MustCompile(`^inline-flex`)
+	reGap            = regexp.MustCompile(`^gap-`)
+	reItems          = regexp.MustCompile(`^items-`)
+	reJustify        = regexp.MustCompile(`^justify-`)
+	reContent        = regexp.MustCompile(`^content-`)
+	rePlace          = regexp.MustCompile(`^place-`)
+	reOrder          = regexp.MustCompile(`^order-`)
+	reCol            = regexp.MustCompile(`^col-`)
+	reRow            = regexp.MustCompile(`^row-`)
+	reSpace          = regexp.MustCompile(`^space-[xy]-`)
+	reList           = regexp.MustCompile(`^list-`)
+	reShrinkGrow     = regexp.MustCompile(`^(?:shrink|grow)$`)
+	reShrink         = regexp.MustCompile(`^shrink-`)
+	reGrow           = regexp.MustCompile(`^grow-`)
+	reBasis          = regexp.MustCompile(`^basis-`)
+	reSelect         = regexp.MustCompile(`^select-`)
+	reWhitespace     = regexp.MustCompile(`^whitespace-`)
+	reSpacing        = regexp.MustCompile(`^(?:m-|mx-|my-|mt-|mr-|mb-|ml-|p-|px-|py-|pt-|pr-|pb-|pl-)`)
+	reDimensions     = regexp.MustCompile(`^(?:w-|h-|min-w-|max-w-|min-h-|max-h-|size-)`)
+	reFont           = regexp.MustCompile(`^font-`)
+	reBorder         = regexp.MustCompile(`^(?:border|outline-|ring-|divide-)`)
+	reRounded        = regexp.MustCompile(`^rounded`)
+	reShadow         = regexp.MustCompile(`^shadow`)
+	reTextColor      = regexp.MustCompile(`^text-`)
+	reBgFill         = regexp.MustCompile(`^(?:bg-|fill-|stroke-|from-|to-|via-|opacity-|accent-|caret-|decoration-)`)
+	reFloat          = regexp.MustCompile(`^float-`)
+	reClear          = regexp.MustCompile(`^clear-`)
+	reGroupNamed     = regexp.MustCompile(`^group/[\w-]+$`)
 )
 
 // Classify returns the sort group for a Tailwind utility token, or -1 if unknown.
@@ -55,21 +60,28 @@ func Classify(token string) int {
 		return endGroup
 	}
 
-	if rePosition.MatchString(base) {
-		if variant {
-			return variantGroup
-		}
+	if base == "group" || reGroupSlash.MatchString(base) {
+		return 0
+	}
+
+	if reSelfGroup.MatchString(base) || reJustifySelf.MatchString(base) || rePlaceSelf.MatchString(base) ||
+		reAspect.MatchString(base) ||
+		reShrinkGrow.MatchString(base) || reShrink.MatchString(base) || reGrow.MatchString(base) ||
+		(strings.HasPrefix(base, "flex-") && !reFlexContainer.MatchString(base)) {
 		return 1
 	}
 
-	if rePositionOff.MatchString(base) {
+	if rePosition.MatchString(base) {
 		if variant {
 			return variantGroup
 		}
 		return 2
 	}
 
-	if reSelfGroup.MatchString(base) || base == "group" || reGroupSlash.MatchString(base) {
+	if rePositionOff.MatchString(base) {
+		if variant {
+			return variantGroup
+		}
 		return 3
 	}
 
@@ -82,21 +94,16 @@ func Classify(token string) int {
 	}
 
 	if reGrid.MatchString(base) || base == "grid" || reInlineGrid.MatchString(base) ||
-		base == "flex" || reInlineFlex.MatchString(base) ||
+		base == "flex" || reInlineFlex.MatchString(base) || reFlexContainer.MatchString(base) ||
 		reGap.MatchString(base) || reItems.MatchString(base) || reJustify.MatchString(base) ||
 		reContent.MatchString(base) || rePlace.MatchString(base) || reOrder.MatchString(base) ||
 		reCol.MatchString(base) || reRow.MatchString(base) || reSpace.MatchString(base) ||
-		reList.MatchString(base) {
+		reList.MatchString(base) ||
+		reBasis.MatchString(base) || reWhitespace.MatchString(base) || base == "compress-zero" {
 		if variant {
 			return variantGroup
 		}
 		return childrenGroup
-	}
-
-	if reShrinkGrow.MatchString(base) || reShrink.MatchString(base) || reGrow.MatchString(base) ||
-		reBasis.MatchString(base) || reWhitespace.MatchString(base) ||
-		base == "compress-zero" || strings.HasPrefix(base, "flex-") {
-		return 0
 	}
 
 	if !variant && reSpacing.MatchString(base) {
@@ -107,7 +114,9 @@ func Classify(token string) int {
 		return 5
 	}
 
-	if base == "block" || base == "inline" || base == "hidden" || base == "visible" || base == "isolate" {
+	if base == "block" || base == "inline" || base == "inline-block" || base == "hidden" ||
+		base == "visible" || base == "isolate" || base == "flow-root" || base == "contents" ||
+		base == "table" || reFloat.MatchString(base) || reClear.MatchString(base) {
 		if variant {
 			return variantGroup
 		}

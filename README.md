@@ -139,13 +139,13 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 
 | # | Group | Examples |
 |---|-------|----------|
-| 1 | Element | `flex-*`, `shrink-*`, `grow-*`, `whitespace-*`, `compress-zero` |
-| 2 | Position anchor | `relative`, `absolute`, `fixed`, `sticky`, `static` |
-| 3 | Position offsets | `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*` |
-| 4 | Self & group | `self-*`, `group`, `group/name` |
+| 1 | Group | `group`, `group/name` |
+| 2 | Element | `flex-*`, `shrink-*`, `grow-*`, `self-*`, `justify-self-*`, `place-self-*`, `aspect-*` |
+| 3 | Position anchor | `relative`, `absolute`, `fixed`, `sticky`, `static` |
+| 4 | Position offsets | `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*` |
 | 5 | Margin & padding | `m-*`, `p-*`, and axis variants |
-| 6 | Width & height | `w-*`, `h-*`, `min-*`, `max-*`, `size-*`, `aspect-*` |
-| 7 | Display | `block`, `inline`, `hidden`, `visible`, `isolate` |
+| 6 | Width & height | `w-*`, `h-*`, `min-*`, `max-*`, `size-*` |
+| 7 | Display | `block`, `inline`, `inline-block`, `hidden`, `flow-root`, `contents`, `table`, `float-*`, `clear-*` |
 | 8 | Text size | `text-xs`, `text-sm`, `text-base`, `text-lg`, … `text-9xl` |
 | 9 | Font | `font-medium`, `font-mono`, `font-*` |
 | 10 | Text color | `text-red-500`, `text-muted-foreground`, `text-center` |
@@ -156,7 +156,7 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 | 15 | Rounding | `rounded-*` |
 | 16 | Shadow | `shadow-*` |
 | 17 | Truncate & overflow | `truncate`, `overflow-*`, `text-ellipsis`, `select-*` |
-| 18 | Children (grid & flex) | `grid-*`, `flex`, `items-*`, `justify-*`, `gap-*`, etc. |
+| 18 | Children (grid & flex) | `flex-row`, `flex-col`, `flex-wrap`, `grid-*`, `flex`, `basis-*`, `items-*`, `justify-*`, `gap-*`, etc. |
 | 19 | End | `cursor-*`, `pointer-events-*`, `z-*` (always last) |
 
 ### Visual order
@@ -168,13 +168,21 @@ Groups are listed top → bottom (1 first, 19 last). In a `className` string, ea
 
 ### Group details
 
-#### 1. Element
+#### 1. Group
 
-Flex-child sizing and element-level behavior come first — these describe how the element itself behaves inside a flex container.
+`group` · `group/accordion-trigger`
 
-`flex-*` · `shrink-*` · `grow-*` · `basis-*` · `whitespace-*` · `compress-zero`
+Named groups like `group/accordion-trigger` are recognized as group utilities, not variant prefixes.
 
-#### 2. Position anchor
+#### 2. Element
+
+Flex-child sizing, self-alignment, and element-level behavior — these describe how the element itself behaves inside a flex or grid container.
+
+`flex-*` · `shrink-*` · `grow-*` · `self-*` · `justify-self-*` · `place-self-*` · `aspect-*`
+
+`flex-*` here means child sizing utilities (`flex-1`, `flex-none`, `flex-auto`, `flex-initial`). Container utilities (`flex-row`, `flex-col`, `flex-wrap`) belong to group 18.
+
+#### 3. Position anchor
 
 Positioning mode — before any offset values.
 
@@ -182,15 +190,9 @@ Positioning mode — before any offset values.
 
 Variant-prefixed anchors (e.g. `md:absolute`) are treated as **variant modifiers** (group 12).
 
-#### 3. Position offsets
+#### 4. Position offsets
 
 `inset-*` · `top-*` · `right-*` · `bottom-*` · `left-*`
-
-#### 4. Self & group
-
-`self-*` · `group` · `group/accordion-trigger`
-
-Named groups like `group/accordion-trigger` are recognized as group utilities, not variant prefixes.
 
 #### 5. Margin & padding
 
@@ -200,11 +202,11 @@ Named groups like `group/accordion-trigger` are recognized as group utilities, n
 
 #### 6. Width & height
 
-`w-*` · `h-*` · `min-w-*` · `max-w-*` · `min-h-*` · `max-h-*` · `size-*` · `aspect-*`
+`w-*` · `h-*` · `min-w-*` · `max-w-*` · `min-h-*` · `max-h-*` · `size-*`
 
 #### 7. Display
 
-`block` · `inline` · `hidden` · `visible` · `isolate`
+`block` · `inline` · `inline-block` · `hidden` · `visible` · `isolate` · `flow-root` · `contents` · `table` · `float-*` · `clear-*`
 
 Variant-prefixed display utilities (e.g. `md:hidden`) sort as **variant modifiers**.
 
@@ -270,9 +272,9 @@ Before children layout utilities.
 
 #### 18. Children (grid & flex)
 
-Layout that affects children. `flex-*` child sizing utilities are in group 1 (element); bare `flex` and other container utilities stay here.
+Container layout that affects children. `flex-*` child sizing utilities are in group 2 (element); container utilities stay here.
 
-`grid` · `grid-*` · `inline-grid` · `flex` · `inline-flex` · `items-*` · `justify-*` · `content-*` · `place-*` · `order-*` · `col-*` · `row-*` · `space-x-*` · `space-y-*` · `list-*` · `gap-*`
+`flex-row` · `flex-col` · `flex-wrap` · `flex-nowrap` · `grid` · `grid-*` · `inline-grid` · `flex` · `inline-flex` · `basis-*` · `whitespace-*` · `compress-zero` · `items-*` · `justify-*` · `content-*` · `place-items-*` · `place-content-*` · `order-*` · `col-*` · `row-*` · `space-x-*` · `space-y-*` · `list-*` · `gap-*`
 
 Variant-prefixed children utilities (e.g. `md:flex`) sort as **variant modifiers**.
 
@@ -328,7 +330,7 @@ Interaction and stacking — **always last**.
 
 `twaz` walks each class string left to right. Each token is classified into a group number. If a token's group number is **lower** than a token that appeared earlier, it is reported as a violation — it should have appeared earlier in the string.
 
-Example: in `bg-muted text-sm absolute`, `text-sm` (group 8) appears after `bg-muted` (group 11), and `absolute` (group 1) appears after `bg-muted` — both are violations.
+Example: in `bg-muted text-sm absolute`, `text-sm` (group 8) appears after `bg-muted` (group 11), and `absolute` (group 3) appears after `bg-muted` — both are violations.
 
 ## Development
 
