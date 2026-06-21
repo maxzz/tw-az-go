@@ -78,11 +78,20 @@ func Classify(token string) int {
 		return 2
 	}
 
-	if rePositionOff.MatchString(base) {
+	if base == "block" || base == "inline" || base == "inline-block" || base == "hidden" ||
+		base == "visible" || base == "isolate" || base == "flow-root" || base == "contents" ||
+		base == "table" || reFloat.MatchString(base) || reClear.MatchString(base) {
 		if variant {
 			return variantGroup
 		}
 		return 3
+	}
+
+	if rePositionOff.MatchString(base) {
+		if variant {
+			return variantGroup
+		}
+		return 4
 	}
 
 	if reTransition.MatchString(base) {
@@ -107,19 +116,10 @@ func Classify(token string) int {
 	}
 
 	if !variant && reSpacing.MatchString(base) {
-		return 4
-	}
-
-	if reDimensions.MatchString(base) {
 		return 5
 	}
 
-	if base == "block" || base == "inline" || base == "inline-block" || base == "hidden" ||
-		base == "visible" || base == "isolate" || base == "flow-root" || base == "contents" ||
-		base == "table" || reFloat.MatchString(base) || reClear.MatchString(base) {
-		if variant {
-			return variantGroup
-		}
+	if reDimensions.MatchString(base) {
 		return 6
 	}
 

@@ -142,10 +142,10 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 | 1 | Group | `group`, `group/name` |
 | 2 | Element | `flex-*`, `shrink-*`, `grow-*`, `self-*`, `justify-self-*`, `place-self-*`, `aspect-*` |
 | 3 | Position anchor | `relative`, `absolute`, `fixed`, `sticky`, `static` |
-| 4 | Position offsets | `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*` |
-| 5 | Margin & padding | `m-*`, `p-*`, and axis variants |
-| 6 | Width & height | `w-*`, `h-*`, `min-*`, `max-*`, `size-*` |
-| 7 | Display | `block`, `inline`, `inline-block`, `hidden`, `flow-root`, `contents`, `table`, `float-*`, `clear-*` |
+| 4 | Display | `block`, `inline`, `inline-block`, `hidden`, `flow-root`, `contents`, `table`, `float-*`, `clear-*` |
+| 5 | Position offsets | `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*` |
+| 6 | Margin & padding | `m-*`, `p-*`, and axis variants |
+| 7 | Width & height | `w-*`, `h-*`, `min-*`, `max-*`, `size-*` |
 | 8 | Text size | `text-xs`, `text-sm`, `text-base`, `text-lg`, … `text-9xl` |
 | 9 | Font | `font-medium`, `font-mono`, `font-*` |
 | 10 | Text color | `text-red-500`, `text-muted-foreground`, `text-center` |
@@ -190,25 +190,25 @@ Positioning mode — before any offset values.
 
 Variant-prefixed anchors (e.g. `md:absolute`) are treated as **variant modifiers** (group 12).
 
-#### 4. Position offsets
+#### 4. Display
+
+`block` · `inline` · `inline-block` · `hidden` · `visible` · `isolate` · `flow-root` · `contents` · `table` · `float-*` · `clear-*`
+
+Variant-prefixed display utilities (e.g. `md:hidden`) sort as **variant modifiers**.
+
+#### 5. Position offsets
 
 `inset-*` · `top-*` · `right-*` · `bottom-*` · `left-*`
 
-#### 5. Margin & padding
+#### 6. Margin & padding
 
 **Unprefixed only** — responsive or state-prefixed spacing (e.g. `md:px-4`, `hover:p-2`) is treated as a **variant modifier** (group 12).
 
 `m-*` · `mx-*` · `my-*` · `mt-*` · `mr-*` · `mb-*` · `ml-*` · `p-*` · `px-*` · `py-*` · …
 
-#### 6. Width & height
+#### 7. Width & height
 
 `w-*` · `h-*` · `min-w-*` · `max-w-*` · `min-h-*` · `max-h-*` · `size-*`
-
-#### 7. Display
-
-`block` · `inline` · `inline-block` · `hidden` · `visible` · `isolate` · `flow-root` · `contents` · `table` · `float-*` · `clear-*`
-
-Variant-prefixed display utilities (e.g. `md:hidden`) sort as **variant modifiers**.
 
 #### 8. Text size
 
