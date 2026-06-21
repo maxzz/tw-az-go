@@ -127,7 +127,7 @@ func Classify(token string) int {
 		return 7
 	}
 
-	if reFont.MatchString(base) {
+	if reFont.MatchString(base) || base == "tabular-nums" {
 		return 8
 	}
 
