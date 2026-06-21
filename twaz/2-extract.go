@@ -158,9 +158,10 @@ func skipTemplateLiteral(s string, start int) int {
 			i += 2
 			depth := 1
 			for i < len(s) && depth > 0 {
-				if s[i] == '{' {
+				switch s[i] {
+				case '{':
 					depth++
-				} else if s[i] == '}' {
+				case '}':
 					depth--
 				}
 				i++
