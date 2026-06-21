@@ -77,7 +77,7 @@ func Classify(token string) int {
 		return transitionGroup
 	}
 
-	if base == "truncate" || base == "text-ellipsis" || reOverflow.MatchString(base) {
+	if base == "truncate" || base == "text-ellipsis" || reOverflow.MatchString(base) || reSelect.MatchString(base) {
 		return truncateOverflowGrp
 	}
 
@@ -94,7 +94,7 @@ func Classify(token string) int {
 	}
 
 	if reShrinkGrow.MatchString(base) || reShrink.MatchString(base) || reGrow.MatchString(base) ||
-		reBasis.MatchString(base) || reSelect.MatchString(base) || reWhitespace.MatchString(base) ||
+		reBasis.MatchString(base) || reWhitespace.MatchString(base) ||
 		base == "compress-zero" {
 		return 3
 	}

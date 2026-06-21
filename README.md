@@ -142,7 +142,7 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 | 1 | Position anchor | `relative`, `absolute`, `fixed`, `sticky`, `static` |
 | 2 | Position offsets | `inset-*`, `top-*`, `right-*`, `bottom-*`, `left-*` |
 | 3 | Self & group | `self-*`, `group`, `group/name` |
-| 4 | Element | `shrink-*`, `grow-*`, `select-*`, `whitespace-*`, `compress-zero` |
+| 4 | Element | `shrink-*`, `grow-*`, `whitespace-*`, `compress-zero` |
 | 5 | Margin & padding | `m-*`, `p-*`, and axis variants |
 | 6 | Width & height | `w-*`, `h-*`, `min-*`, `max-*`, `size-*`, `aspect-*` |
 | 7 | Display | `block`, `inline`, `hidden`, `visible`, `isolate` |
@@ -155,8 +155,8 @@ Unrecognized tokens are ignored for ordering — they do not trigger violations 
 | 14 | Border | `border`, `border-*`, `outline-*`, `ring-*`, `divide-*` |
 | 15 | Rounding | `rounded-*` |
 | 16 | Shadow | `shadow-*` |
-| 17 | Truncate & overflow | `truncate`, `overflow-*`, `text-ellipsis` |
-| 18 | Children (grid & flex) | `grid-*`, `flex`, `gap-*`, `items-*`, `justify-*`, etc. |
+| 17 | Truncate & overflow | `truncate`, `overflow-*`, `text-ellipsis`, `select-*` |
+| 18 | Children (grid & flex) | `flex-*`, `grid-*`, `flex`, `items-*`, `justify-*`, `gap-*`, etc. |
 | 19 | End | `cursor-*`, `pointer-events-*`, `z-*` (always last) |
 
 ### Visual order
@@ -188,7 +188,7 @@ Named groups like `group/accordion-trigger` are recognized as group utilities, n
 
 #### 4. Element
 
-`shrink-*` · `grow-*` · `basis-*` · `select-*` · `whitespace-*` · `compress-zero`
+`shrink-*` · `grow-*` · `basis-*` · `whitespace-*` · `compress-zero`
 
 #### 5. Margin & padding
 
@@ -264,13 +264,13 @@ Borders, outlines, rings, and dividers. `rounded-*` is excluded (group 15).
 
 Before children layout utilities.
 
-`truncate` · `overflow-*` · `text-ellipsis`
+`truncate` · `overflow-*` · `text-ellipsis` · `select-*`
 
 #### 18. Children (grid & flex)
 
-Layout that affects children. Within this group, `grid-*` sorts before `flex` when both are present.
+Layout that affects children. `flex-*` child sizing utilities come first because they apply to items inside a flex container.
 
-`grid` · `grid-*` · `inline-grid` · `flex` · `inline-flex` · `gap-*` · `items-*` · `justify-*` · `content-*` · `place-*` · `order-*` · `col-*` · `row-*` · `space-x-*` · `space-y-*` · `list-*`
+`flex-*` · `grid` · `grid-*` · `inline-grid` · `flex` · `inline-flex` · `items-*` · `justify-*` · `content-*` · `place-*` · `order-*` · `col-*` · `row-*` · `space-x-*` · `space-y-*` · `list-*` · `gap-*`
 
 Variant-prefixed children utilities (e.g. `md:flex`) sort as **variant modifiers**.
 
